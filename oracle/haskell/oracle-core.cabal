@@ -1,0 +1,32 @@
+cabal-version:      2.4
+name:               oracle-core
+version:            1.0.0
+synopsis:           ORACLE Formal Model Definition, Typed Scientific DSL & Validation Layer
+license:            MIT
+build-type:         Simple
+
+-- ORACLE's Haskell layer is intentionally built on nothing but the GHC
+-- boot libraries (base, containers) so that the formal specification
+-- and validation layer is reproducible on any machine with a working
+-- GHC installation, with no external dependency resolution required.
+
+library
+  hs-source-dirs:   src
+  exposed-modules:  Oracle.Json
+                    Oracle.Units
+                    Oracle.Formula
+                    Oracle.Types
+                    Oracle.Validation
+  build-depends:    base >=4.14 && <5
+                  , containers
+  default-language: Haskell2010
+  ghc-options:      -Wall
+
+executable oracle-validate
+  hs-source-dirs:   app
+  main-is:          Main.hs
+  build-depends:    base >=4.14 && <5
+                  , containers
+                  , oracle-core
+  default-language: Haskell2010
+  ghc-options:      -Wall

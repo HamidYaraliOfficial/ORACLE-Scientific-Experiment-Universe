@@ -1,0 +1,16 @@
+name = "Oracle"
+uuid = "b1a3a7e2-6e0f-4a3a-9f0d-1c2e3d4b5a6f"
+authors = ["ORACLE Contributors"]
+version = "1.0.0"
+
+# ORACLE's numerical core is intentionally built on nothing but Julia's
+# own standard library, so `julia run_experiment.jl ...` works on any
+# stock Julia install with no `Pkg.instantiate()` step required.
+[deps]
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+
+[compat]
+julia = "1.8"

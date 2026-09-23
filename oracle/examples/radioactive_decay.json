@@ -1,0 +1,31 @@
+{
+  "name": "radioactive_decay",
+  "description": "First-order exponential decay: dx/dt = -k*x, a minimal end-to-end ORACLE example.",
+  "variables": [
+    { "name": "x", "kind": "scalar", "unit": "mol" }
+  ],
+  "parameters": [
+    {
+      "name": "k", "kind": "scalar", "unit": "1/s", "default": 0.1,
+      "min": 0.01, "max": 0.5,
+      "distribution": { "type": "uniform", "low": 0.05, "high": 0.2 }
+    }
+  ],
+  "constants": [],
+  "equations": [
+    { "output": "x", "expr": "-k * x", "unit": "mol/s" }
+  ],
+  "constraints": [
+    { "expr": "x >= 0", "severity": "error" }
+  ],
+  "initialConditions": { "x": 100.0 },
+  "solver": { "method": "rk4", "stepSize": 0.1, "tolerance": 1e-6, "maxSteps": 100000 },
+  "seed": 42,
+  "objective": null,
+  "metrics": ["final_x", "mean_x"],
+  "stopConditions": [],
+  "replications": 1,
+  "timeRange": [0, 50],
+  "samplingRate": 1.0,
+  "outputSchema": ["t", "x"]
+}

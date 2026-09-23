@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="win11-light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORACLE — Scientific Experiment Universe</title>
+<link rel="stylesheet" href="css/themes.css">
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+</head>
+<body>
+<div id="app">
+
+  <!-- ===================== Title / Command Bar ===================== -->
+  <div class="titlebar">
+    <div class="logo"><span class="dot"></span> <span data-i18n="appName">ORACLE</span></div>
+    <div class="command-palette-hint" id="command-palette-hint" data-i18n="command_palette">Search commands…</div>
+    <div class="spacer"></div>
+    <div class="row">
+      <label style="font-size:12px;color:var(--color-text-secondary)" data-i18n="lang_label">Language</label>
+      <select id="lang-select">
+        <option value="en">English</option>
+        <option value="fa">فارسی</option>
+        <option value="zh">中文</option>
+      </select>
+      <label style="font-size:12px;color:var(--color-text-secondary)" data-i18n="theme_label">Theme</label>
+      <select id="theme-select">
+        <option value="win11-light" data-i18n="theme_light">Windows Light</option>
+        <option value="win11-dark" data-i18n="theme_dark">Windows Dark</option>
+        <option value="win11-default" data-i18n="theme_default">Windows Default</option>
+        <option value="red" data-i18n="theme_red">Red</option>
+        <option value="blue" data-i18n="theme_blue">Blue</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="body-row">
+    <!-- ===================== Sidebar ===================== -->
+    <div class="sidebar" id="sidebar">
+      <div class="nav-item active" data-panel="builder"><span class="icon">🧪</span><span data-i18n="nav_builder">Experiment Builder</span></div>
+      <div class="nav-item" data-panel="formula"><span class="icon">ƒ</span><span data-i18n="nav_formula">Formula Lab</span></div>
+      <div class="nav-item" data-panel="sweep"><span class="icon">▦</span><span data-i18n="nav_sweep">Parameter Sweep Studio</span></div>
+      <div class="nav-item" data-panel="montecarlo"><span class="icon">🎲</span><span data-i18n="nav_montecarlo">Monte Carlo Lab</span></div>
+      <div class="nav-item" data-panel="sensitivity"><span class="icon">📈</span><span data-i18n="nav_sensitivity">Sensitivity Lab</span></div>
+      <div class="nav-item" data-panel="results"><span class="icon">📊</span><span data-i18n="nav_results">Result Explorer</span></div>
+      <div class="nav-item" data-panel="report"><span class="icon">📄</span><span data-i18n="nav_report">Report Studio</span></div>
+      <div class="nav-section-label" data-i18n="nav_registry">Experiment Registry</div>
+      <div class="nav-item" data-panel="registry"><span class="icon">🗂</span><span data-i18n="nav_registry">Experiment Registry</span></div>
+      <div class="nav-item" data-panel="availability"><span class="icon">🕒</span><span data-i18n="nav_availability">Resource Availability</span></div>
+      <div class="nav-item" data-panel="about"><span class="icon">ℹ️</span><span data-i18n="nav_about">About</span></div>
+    </div>
+
+    <!-- ===================== Main content ===================== -->
+    <div class="main">
+
+      <!-- ---------- Experiment Builder ---------- -->
+      <div class="panel active" id="panel-builder">
+        <div class="page-title" data-i18n="builder_title">Experiment Builder</div>
+        <div class="page-subtitle" data-i18n="builder_subtitle">...</div>
+
+        <div class="card">
+          <div class="grid-2">
+            <div class="field"><label data-i18n="name_label">Experiment name</label><input type="text" id="exp-name"></div>
+            <div class="field"><label data-i18n="desc_label">Description</label><input type="text" id="exp-desc"></div>
+          </div>
+          <div class="row">
+            <button class="btn" id="btn-load-example" data-i18n="load_example">Load example</button>
+            <button class="btn primary" id="btn-export-json" data-i18n="export_json">Export experiment JSON</button>
+            <button class="btn primary" id="btn-run-simulation" data-i18n="run_simulation">Run simulation</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="variables_title">Variables &amp; Parameters</h3>
+          <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">State variables (with initial condition):</div>
+          <div class="list-editable" id="list-variables"></div>
+          <button class="btn small" id="btn-add-variable" data-i18n="add_variable">Add variable</button>
+          <div style="height:14px"></div>
+          <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">Tunable parameters (with bounds / distribution):</div>
+          <div class="list-editable" id="list-parameters"></div>
+          <button class="btn small" id="btn-add-parameter" data-i18n="add_variable">Add variable</button>
+          <div style="height:14px"></div>
+          <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">Constants:</div>
+          <div class="list-editable" id="list-constants"></div>
+          <button class="btn small" id="btn-add-constant" data-i18n="add_variable">Add variable</button>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="equations_title">Equations (dState/dt)</h3>
+          <div class="list-editable" id="list-equations"></div>
+          <button class="btn small" id="btn-add-equation" data-i18n="add_equation">Add equation</button>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="constraints_title">Constraints</h3>
+          <div class="list-editable" id="list-constraints"></div>
+          <button class="btn small" id="btn-add-constraint" data-i18n="add_constraint">Add constraint</button>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="solver_title">Solver &amp; Time Settings</h3>
+          <div class="grid-3">
+            <div class="field"><label data-i18n="solver_method">Method</label>
+              <select id="solver-method"><option value="euler">Euler</option><option value="rk4" selected>RK4</option><option value="rk45">RK45 (adaptive, Julia only)</option></select>
+            </div>
+            <div class="field"><label data-i18n="step_size">Step size</label><input type="number" id="solver-step" value="0.1" step="0.01"></div>
+            <div class="field"><label data-i18n="tolerance">Tolerance (RK45)</label><input type="number" id="solver-tol" value="0.000001" step="0.000001"></div>
+            <div class="field"><label data-i18n="max_steps">Max steps</label><input type="number" id="solver-maxsteps" value="100000"></div>
+            <div class="field"><label data-i18n="time_start">Time start</label><input type="number" id="time-start" value="0"></div>
+            <div class="field"><label data-i18n="time_end">Time end</label><input type="number" id="time-end" value="50"></div>
+            <div class="field"><label data-i18n="seed_label">Master seed</label><input type="number" id="exp-seed" value="42"></div>
+            <div class="field"><label data-i18n="replications_label">Replications</label><input type="number" id="exp-replications" value="1"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 data-i18n="validation_title">Live Validation</h3>
+          <div class="validation-list" id="validation-list"></div>
+        </div>
+      </div>
+
+      <!-- ---------- Formula Lab ---------- -->
+      <div class="panel" id="panel-formula">
+        <div class="page-title" data-i18n="formula_title">Formula Lab</div>
+        <div class="page-subtitle" data-i18n="formula_subtitle">...</div>
+        <div class="card">
+          <div class="field"><label data-i18n="expression_label">Expression</label><input type="text" id="formula-expr" value="-k * x + sin(omega * t)"></div>
+          <div class="field"><label data-i18n="environment_label">Variable environment (name = value, one per line)</label>
+            <textarea id="formula-env" rows="5">k = 0.2
+x = 10
+omega = 1.0
+t = 0</textarea>
+          </div>
+          <button class="btn primary" id="btn-evaluate-formula" data-i18n="evaluate">Evaluate</button>
+        </div>
+        <div class="card">
+          <div class="grid-2">
+            <div>
+              <h3 data-i18n="ast_label">Parsed AST</h3>
+              <pre class="code" id="formula-ast">—</pre>
+            </div>
+            <div>
+              <h3 data-i18n="result_label">Result</h3>
+              <pre class="code" id="formula-result">—</pre>
+              <h3 data-i18n="deps_label">Dependencies</h3>
+              <div class="chip-list" id="formula-deps"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ---------- Sweep Studio ---------- -->
+      <div class="panel" id="panel-sweep">
+        <div class="page-title" data-i18n="sweep_title">Parameter Sweep Studio</div>
+        <div class="page-subtitle" data-i18n="sweep_subtitle">...</div>
+        <div class="card">
+          <div class="row">
+            <div class="field"><label data-i18n="sweep_method">Sampling method</label>
+              <select id="sweep-method"><option value="grid" data-i18n="grid">Grid search</option><option value="lhs" data-i18n="lhs">Latin Hypercube</option></select>
+            </div>
+            <div class="field"><label data-i18n="resolution_label">Resolution per dimension</label><input type="number" id="sweep-resolution" value="8"></div>
+            <button class="btn primary" id="btn-run-sweep" data-i18n="run_sweep">Run sweep</button>
+          </div>
+          <p style="font-size:12px;color:var(--color-text-secondary)">Sweeps every parameter below that has both a min and max set in the Experiment Builder.</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="sweep_results_title">Sweep results</h3>
+          <canvas id="chart-sweep" height="90"></canvas>
+          <div id="sweep-table-container" style="margin-top:14px;max-height:320px;overflow:auto"></div>
+        </div>
+      </div>
+
+      <!-- ---------- Monte Carlo Lab ---------- -->
+      <div class="panel" id="panel-montecarlo">
+        <div class="page-title" data-i18n="mc_title">Monte Carlo Lab</div>
+        <div class="page-subtitle" data-i18n="mc_subtitle">...</div>
+        <div class="card">
+          <div class="row">
+            <div class="field"><label data-i18n="n_samples_label">Number of samples</label><input type="number" id="mc-nsamples" value="2000"></div>
+            <button class="btn primary" id="btn-run-mc" data-i18n="run_montecarlo">Run Monte Carlo</button>
+          </div>
+          <p style="font-size:12px;color:var(--color-text-secondary)">Samples each parameter from the distribution configured in the Experiment Builder (falls back to its default value if none is set).</p>
+        </div>
+        <div class="card">
+          <h3 data-i18n="mc_summary_title">Summary statistics</h3>
+          <canvas id="chart-mc-histogram" height="90"></canvas>
+          <dl class="kv-grid" id="mc-summary" style="margin-top:14px"></dl>
+        </div>
+      </div>
+
+      <!-- ---------- Sensitivity Lab ---------- -->
+      <div class="panel" id="panel-sensitivity">
+        <div class="page-title" data-i18n="sensitivity_title">Sensitivity Lab</div>
+        <div class="page-subtitle" data-i18n="sensitivity_subtitle">...</div>
+        <div class="card">
+          <button class="btn primary" id="btn-run-sensitivity" data-i18n="run_sensitivity">Run sensitivity analysis</button>
+        </div>
+        <div class="card">
+          <h3 data-i18n="tornado_title">Sensitivity tornado</h3>
+          <canvas id="chart-sensitivity-tornado" height="140"></canvas>
+        </div>
+      </div>
+
+      <!-- ---------- Result Explorer ---------- -->
+      <div class="panel" id="panel-results">
+        <div class="page-title" data-i18n="results_title">Result Explorer</div>
+        <div class="page-subtitle" data-i18n="results_subtitle">...</div>
+        <div class="card" id="results-container">
+          <div class="empty-state" data-i18n="no_results">No results yet.</div>
+        </div>
+      </div>
+
+      <!-- ---------- Report Studio ---------- -->
+      <div class="panel" id="panel-report">
+        <div class="page-title" data-i18n="report_title">Report Studio</div>
+        <div class="page-subtitle" data-i18n="report_subtitle">...</div>
+        <div class="card">
+          <button class="btn primary" id="btn-generate-report" data-i18n="generate_report">Generate HTML report</button>
+          <a id="btn-download-report" class="btn" style="display:none;text-decoration:none;margin-inline-start:8px" data-i18n="download_report" download="oracle_report.html">Download report</a>
+        </div>
+        <div class="card">
+          <pre class="code" id="report-preview" style="max-height:420px;overflow:auto">—</pre>
+        </div>
+      </div>
+
+      <!-- ---------- Resource Availability ---------- -->
+      <div class="panel" id="panel-availability">
+        <div class="page-title" data-i18n="availability_title">Resource Availability</div>
+        <div class="page-subtitle" data-i18n="availability_subtitle">...</div>
+        <div class="card">
+          <div class="row">
+            <div class="field"><label data-i18n="resource_name">Resource name</label><input type="text" id="avail-name" placeholder="e.g. julia-worker-01"></div>
+            <div class="field"><label data-i18n="opens_at">Opens at</label><input type="time" id="avail-opens" value="09:00"></div>
+            <div class="field"><label data-i18n="closes_at">Closes at</label><input type="time" id="avail-closes" value="18:00"></div>
+            <button class="btn primary" id="btn-add-resource" data-i18n="add_resource">Add resource</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="list-editable" id="availability-list"></div>
+        </div>
+      </div>
+
+      <!-- ---------- Experiment Registry ---------- -->
+      <div class="panel" id="panel-registry">
+        <div class="page-title" data-i18n="registry_title">Experiment Registry</div>
+        <div class="page-subtitle" data-i18n="registry_subtitle">...</div>
+        <div class="card" id="registry-container">
+          <div class="empty-state" data-i18n="registry_empty">Nothing registered yet.</div>
+        </div>
+      </div>
+
+      <!-- ---------- About ---------- -->
+      <div class="panel" id="panel-about">
+        <div class="page-title" data-i18n="about_title">About ORACLE</div>
+        <div class="card"><p data-i18n="about_body">...</p></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<!-- Command palette -->
+<div id="command-palette-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;align-items:flex-start;justify-content:center;padding-top:12vh">
+  <div style="background:var(--color-bg-elevated);border:1px solid var(--color-border);border-radius:var(--radius-lg);width:min(520px,90vw);box-shadow:var(--shadow-2);overflow:hidden">
+    <input id="command-palette-input" type="text" style="width:100%;border:none;padding:16px 18px;font-size:15px;outline:none;background:transparent;color:var(--color-text)" placeholder="Search commands…">
+    <div id="command-palette-results" style="max-height:320px;overflow-y:auto;border-top:1px solid var(--color-border)"></div>
+  </div>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/availability.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

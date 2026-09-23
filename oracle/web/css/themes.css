@@ -1,0 +1,129 @@
+/* ============================================================
+   ORACLE Web UI — Theme System
+   Five themes, each a self-contained set of CSS custom properties:
+     win11-light   (Fluent light, blue accent)
+     win11-dark    (Fluent dark, blue accent)
+     win11-default (the "out of the box" Windows 11 Mica look)
+     red-accent
+     blue-accent
+   ============================================================ */
+
+:root {
+  --font-family: "Segoe UI Variable", "Segoe UI", "Vazirmatn", "Noto Sans SC", -apple-system, sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --transition-fast: 120ms ease;
+  --transition-med: 220ms ease;
+  --shadow-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.10);
+  --shadow-2: 0 4px 16px rgba(0,0,0,0.18);
+}
+
+/* ---------- Windows 11 Light (default) ---------- */
+html[data-theme="win11-light"] {
+  --color-bg: #f3f3f3;
+  --color-bg-elevated: #ffffff;
+  --color-surface: #fbfbfb;
+  --color-surface-2: #f0f0f0;
+  --color-border: #e1e1e1;
+  --color-text: #1b1b1b;
+  --color-text-secondary: #5b5b5b;
+  --color-accent: #0067c0;
+  --color-accent-hover: #0958a5;
+  --color-accent-contrast: #ffffff;
+  --color-success: #107c10;
+  --color-warning: #9d5d00;
+  --color-danger: #c42b1c;
+  --color-nav-bg: #f9f9f9;
+  --color-titlebar: #ffffffcc;
+}
+
+/* ---------- Windows 11 Dark ---------- */
+html[data-theme="win11-dark"] {
+  --color-bg: #202020;
+  --color-bg-elevated: #2b2b2b;
+  --color-surface: #262626;
+  --color-surface-2: #323232;
+  --color-border: #3d3d3d;
+  --color-text: #f3f3f3;
+  --color-text-secondary: #c5c5c5;
+  --color-accent: #60cdff;
+  --color-accent-hover: #7fd8ff;
+  --color-accent-contrast: #003353;
+  --color-success: #6ccb5f;
+  --color-warning: #fce100;
+  --color-danger: #ff99a4;
+  --color-nav-bg: #232323;
+  --color-titlebar: #2b2b2bcc;
+}
+
+/* ---------- Windows 11 "Default" (out-of-the-box Mica + blue) ---------- */
+html[data-theme="win11-default"] {
+  --color-bg: #e8eef7;
+  --color-bg-elevated: #ffffff;
+  --color-surface: #f4f8fd;
+  --color-surface-2: #e3ecf7;
+  --color-border: #cdd9ea;
+  --color-text: #1a1f2b;
+  --color-text-secondary: #4d5768;
+  --color-accent: #005fb8;
+  --color-accent-hover: #004c93;
+  --color-accent-contrast: #ffffff;
+  --color-success: #0f7b0f;
+  --color-warning: #8a5a00;
+  --color-danger: #c42b1c;
+  --color-nav-bg: #edf3fb;
+  --color-titlebar: #ffffffd9;
+}
+
+/* ---------- Red accent ---------- */
+html[data-theme="red"] {
+  --color-bg: #201618;
+  --color-bg-elevated: #2b1c1f;
+  --color-surface: #261719;
+  --color-surface-2: #362124;
+  --color-border: #4a2a2e;
+  --color-text: #f6ecec;
+  --color-text-secondary: #d6b8ba;
+  --color-accent: #ff5f6d;
+  --color-accent-hover: #ff7c88;
+  --color-accent-contrast: #2a0a0d;
+  --color-success: #7cd992;
+  --color-warning: #ffcf6b;
+  --color-danger: #ff8a80;
+  --color-nav-bg: #241618;
+  --color-titlebar: #2b1c1fcc;
+}
+
+/* ---------- Blue accent ---------- */
+html[data-theme="blue"] {
+  --color-bg: #0d1b2a;
+  --color-bg-elevated: #13253a;
+  --color-surface: #102033;
+  --color-surface-2: #17304a;
+  --color-border: #234160;
+  --color-text: #eaf2fb;
+  --color-text-secondary: #a9c3dc;
+  --color-accent: #4cc9f0;
+  --color-accent-hover: #7ad9f7;
+  --color-accent-contrast: #052033;
+  --color-success: #6be3a0;
+  --color-warning: #ffd166;
+  --color-danger: #ff6b6b;
+  --color-nav-bg: #0f1e30;
+  --color-titlebar: #13253acc;
+}
+
+html, body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+}
+
+::selection { background: var(--color-accent); color: var(--color-accent-contrast); }
+
+/* Scrollbars follow the theme too, Fluent-style thin bars */
+* { scrollbar-width: thin; scrollbar-color: var(--color-border) transparent; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
